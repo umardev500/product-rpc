@@ -44,5 +44,9 @@ func (p *productDelivery) UpdateProduct(
 	ctx context.Context,
 	req *proto.UpdateProductRequest,
 ) (*proto.UpdateProductResponse, error) {
+	err := p.usecase.UpdateProduct(ctx, req)
+	if err != nil {
+		return nil, err
+	}
 	return &proto.UpdateProductResponse{Success: true}, nil
 }

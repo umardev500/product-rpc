@@ -9,6 +9,7 @@ import (
 	"github.com/umardev500/store/proto"
 	"go.mongodb.org/mongo-driver/mongo"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 type Application struct {
@@ -32,6 +33,7 @@ func (a *Application) Start(ctx context.Context) error {
 
 	// Create new grpc server
 	srv := grpc.NewServer()
+	reflection.Register(srv)
 
 	// injection
 	repo := NewProductRepository(a.DB.Collection("products"))

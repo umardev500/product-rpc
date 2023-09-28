@@ -5,6 +5,7 @@ import (
 
 	"github.com/umardev500/product-rpc/domain"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -25,8 +26,9 @@ func (p *productRepository) Create(ctx context.Context, data bson.D) error {
 }
 
 // Update create update for the product
-func (p *productRepository) Update(ctx context.Context, product bson.D) error {
-	filter := bson.M{}
-	_, err := p.collection.UpdateOne(ctx, filter, product)
+func (p *productRepository) Update(ctx context.Context, product bson.D, id primitive.ObjectID) error {
+	filter := bson.M{"_id": id}
+	update := bson.M{"$set": product}
+	_, err := p.collection.UpdateOne(ctx, filter, update)
 	return err
 }
