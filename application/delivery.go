@@ -26,12 +26,11 @@ func (p *productDelivery) CreateProduct(
 	ctx context.Context,
 	req *proto.CreateProductRequest,
 ) (*proto.CreateProductResponse, error) {
-	lib := golib.NewLib()
 	// Append created at struct
 	req.Product.TimeTrack = &proto.TimeTrack{
 		CreatedAt: 100,
 	}
-	product := lib.StructToBson(req, "json")
+	product := golib.StructToBson(req, "json")
 	val := product[0].Value.(bson.D)
 	err := p.usecase.CreateProduct(ctx, val)
 	if err != nil {
@@ -39,4 +38,11 @@ func (p *productDelivery) CreateProduct(
 	}
 
 	return &proto.CreateProductResponse{Success: true}, nil
+}
+
+func (p *productDelivery) UpdateProduct(
+	ctx context.Context,
+	req *proto.UpdateProductRequest,
+) (*proto.UpdateProductResponse, error) {
+	return &proto.UpdateProductResponse{Success: true}, nil
 }

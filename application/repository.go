@@ -23,3 +23,10 @@ func (p *productRepository) Create(ctx context.Context, data bson.D) error {
 	_, err := p.collection.InsertOne(ctx, data)
 	return err
 }
+
+// Update create update for the product
+func (p *productRepository) Update(ctx context.Context, product bson.D) error {
+	filter := bson.M{}
+	_, err := p.collection.UpdateOne(ctx, filter, product)
+	return err
+}

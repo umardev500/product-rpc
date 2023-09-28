@@ -13,5 +13,6 @@ type ProductUsecase interface {
 
 // ProductRepository a contract for product repo
 type ProductRepository interface {
-	Create(ctx context.Context, p bson.D) error
+	Create(ctx context.Context, product bson.D) error
+	Update(ctx context.Context, product bson.D) error
 }
