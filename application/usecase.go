@@ -27,7 +27,7 @@ func (p *productUsecase) CreateProduct(ctx context.Context, req *proto.CreatePro
 	req.Product.TimeTrack = &proto.TimeTrack{
 		CreatedAt: 100,
 	}
-	product := golib.StructToBson(req, "json")[0].Value.(bson.D)
+	product := golib.StructToBson(req, false, "json")[0].Value.(bson.D)
 	return p.repo.Create(ctx, product)
 }
 
@@ -40,6 +40,6 @@ func (p *productUsecase) UpdateProduct(
 		UpdatedAt: time.Now().UTC().Unix(),
 	}
 	id, _ := primitive.ObjectIDFromHex(req.Id)
-	product := golib.StructToBson(req, "json")[0].Value.(bson.D)
+	product := golib.StructToBson(req.Product, true, "json")
 	return p.repo.Update(ctx, product, id)
 }
