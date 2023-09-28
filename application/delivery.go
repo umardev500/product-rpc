@@ -3,10 +3,8 @@ package application
 import (
 	"context"
 
-	golib "github.com/umardev500/go-lib"
 	"github.com/umardev500/product-rpc/domain"
 	"github.com/umardev500/store/proto"
-	"go.mongodb.org/mongo-driver/bson"
 )
 
 type productDelivery struct {
@@ -26,13 +24,7 @@ func (p *productDelivery) CreateProduct(
 	ctx context.Context,
 	req *proto.CreateProductRequest,
 ) (*proto.CreateProductResponse, error) {
-	// Append created at struct
-	req.Product.TimeTrack = &proto.TimeTrack{
-		CreatedAt: 100,
-	}
-	product := golib.StructToBson(req, "json")
-	val := product[0].Value.(bson.D)
-	err := p.usecase.CreateProduct(ctx, val)
+	err := p.usecase.CreateProduct(ctx, req)
 	if err != nil {
 		return nil, err
 	}

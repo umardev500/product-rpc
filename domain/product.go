@@ -10,7 +10,7 @@ import (
 
 // ProductUsecase a contract of method the usecase
 type ProductUsecase interface {
-	CreateProduct(ctx context.Context, product bson.D) error
+	CreateProduct(ctx context.Context, req *proto.CreateProductRequest) error
 	UpdateProduct(ctx context.Context, req *proto.UpdateProductRequest) error
 }
 

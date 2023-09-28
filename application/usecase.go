@@ -22,7 +22,12 @@ func NewProductUsecase(repo domain.ProductRepository) domain.ProductUsecase {
 }
 
 // CreateProduct is method to create new product
-func (p *productUsecase) CreateProduct(ctx context.Context, product bson.D) error {
+func (p *productUsecase) CreateProduct(ctx context.Context, req *proto.CreateProductRequest) error {
+	// Append created at struct
+	req.Product.TimeTrack = &proto.TimeTrack{
+		CreatedAt: 100,
+	}
+	product := golib.StructToBson(req, "json")[0].Value.(bson.D)
 	return p.repo.Create(ctx, product)
 }
 
