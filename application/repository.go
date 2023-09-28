@@ -32,3 +32,10 @@ func (p *productRepository) Update(ctx context.Context, product bson.D, id primi
 	_, err := p.collection.UpdateOne(ctx, filter, update)
 	return err
 }
+
+// Delete deletet the product by the id
+func (p *productRepository) Delete(ctx context.Context, id primitive.ObjectID) error {
+	filter := bson.M{"_id": id}
+	_, err := p.collection.DeleteOne(ctx, filter)
+	return err
+}

@@ -43,3 +43,12 @@ func (p *productUsecase) UpdateProduct(
 	product := golib.StructToBson(req.Product, true, "json")
 	return p.repo.Update(ctx, product, id)
 }
+
+// DeleteProduct is method to delete the product by id
+func (p *productUsecase) DeleteProduct(
+	ctx context.Context,
+	req *proto.DeleteProductRequest,
+) error {
+	id, _ := primitive.ObjectIDFromHex(req.Id)
+	return p.repo.Delete(ctx, id)
+}

@@ -32,6 +32,7 @@ func (p *productDelivery) CreateProduct(
 	return &proto.CreateProductResponse{Success: true}, nil
 }
 
+// UpdateProduct update the product by the id
 func (p *productDelivery) UpdateProduct(
 	ctx context.Context,
 	req *proto.UpdateProductRequest,
@@ -41,4 +42,17 @@ func (p *productDelivery) UpdateProduct(
 		return nil, err
 	}
 	return &proto.UpdateProductResponse{Success: true}, nil
+}
+
+// Delete product is delete the product by the id
+func (p *productDelivery) DeleteProduct(
+	ctx context.Context,
+	req *proto.DeleteProductRequest,
+) (*proto.DeleteProductResponse, error) {
+	err := p.usecase.DeleteProduct(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+
+	return &proto.DeleteProductResponse{Success: true}, nil
 }
