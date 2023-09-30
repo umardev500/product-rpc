@@ -4,8 +4,10 @@ import (
 	"context"
 	"time"
 
+	"github.com/rs/zerolog/log"
 	golib "github.com/umardev500/go-lib"
 	"github.com/umardev500/product-rpc/domain"
+	"github.com/umardev500/product-rpc/domain/model"
 	"github.com/umardev500/store/proto"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -51,4 +53,32 @@ func (p *productUsecase) DeleteProduct(
 ) error {
 	id, _ := primitive.ObjectIDFromHex(req.Id)
 	return p.repo.Delete(ctx, id)
+}
+
+func (p *productUsecase) FindProduct(ctx context.Context) (products []*proto.Product, err error) {
+	cur, err := p.repo.Find(ctx)
+	if err != nil {
+		return
+	}
+
+	for cur.Next(ctx) {
+		var row model.ProductModel
+		err := cur.Decode(&row)
+		if err != nil {
+			log.Error().Msg(err.Error())
+			break
+		}
+		// copy model to proto struct generated
+		var productProto *proto.Product
+		golib.CopyStruct(row, &productProto)
+		var timeTract *proto.TimeTrack
+		golib.CopyStruct(row.TimeTrack, timeTract)
+		productProto.TimeTrack = timeTract
+
+		// p.parseToRPCStruct(row, proto.Product{})
+
+		products = append(products, productProto)
+	}
+
+	return
 }

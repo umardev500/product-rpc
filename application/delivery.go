@@ -19,6 +19,19 @@ func NewProductDelivery(usecase domain.ProductUsecase) proto.ProductServiceServe
 	}
 }
 
+// FindProduct find all products
+func (p *productDelivery) FindProduct(
+	ctx context.Context,
+	req *proto.FindProductRequest,
+) (*proto.FindProductResponse, error) {
+	products, err := p.usecase.FindProduct(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &proto.FindProductResponse{Data: products}, nil
+}
+
 // CreateProduct create product handler
 func (p *productDelivery) CreateProduct(
 	ctx context.Context,

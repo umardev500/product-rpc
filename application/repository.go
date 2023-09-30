@@ -39,3 +39,8 @@ func (p *productRepository) Delete(ctx context.Context, id primitive.ObjectID) e
 	_, err := p.collection.DeleteOne(ctx, filter)
 	return err
 }
+
+func (p *productRepository) Find(ctx context.Context) (*mongo.Cursor, error) {
+	filter := bson.M{}
+	return p.collection.Find(ctx, filter)
+}
