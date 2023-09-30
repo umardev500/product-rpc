@@ -15,6 +15,7 @@ type ProductUsecase interface {
 	UpdateProduct(ctx context.Context, req *proto.UpdateProductRequest) error
 	DeleteProduct(ctx context.Context, req *proto.DeleteProductRequest) error
 	FindProduct(ctx context.Context) ([]*proto.Product, error)
+	CountProducts(ctx context.Context) (int64, error)
 }
 
 // ProductRepository a contract for product repo
@@ -27,4 +28,5 @@ type ProductRepository interface {
 		pageNum,
 		pageSize int64,
 	) (*mongo.Cursor, error)
+	Count(ctx context.Context) (int64, error)
 }

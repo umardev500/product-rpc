@@ -82,3 +82,7 @@ func (p *productUsecase) FindProduct(ctx context.Context) (products []*proto.Pro
 
 	return
 }
+
+func (p *productUsecase) CountProducts(ctx context.Context) (int64, error) {
+	return p.repo.Count(ctx)
+}

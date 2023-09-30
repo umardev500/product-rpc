@@ -24,12 +24,25 @@ func (p *productDelivery) FindProduct(
 	ctx context.Context,
 	req *proto.FindProductRequest,
 ) (*proto.FindProductResponse, error) {
+	// Get products
 	products, err := p.usecase.FindProduct(ctx)
 	if err != nil {
 		return nil, err
 	}
+	// Get total items
+	total, err := p.usecase.CountProducts(ctx)
+	if err != nil {
+		return nil, err
+	}
 
-	return &proto.FindProductResponse{Data: products}, nil
+	result := &proto.FindProductResponse{
+		Data:       products,
+		Page:       1,
+		PerPage:    5,
+		TotalPages: total,
+	}
+
+	return result, nil
 }
 
 // CreateProduct create product handler
