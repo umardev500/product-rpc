@@ -57,7 +57,16 @@ func (p *productRepository) Find(
 }
 
 // Count returns the total count of documents in the product collection.
-func (p *productRepository) Count(ctx context.Context) (int64, error) {
+func (p *productRepository) Count(
+	ctx context.Context,
+	pageNum,
+	pageSize int64,
+) (int64, error) {
 	filter := bson.M{}
-	return p.collection.CountDocuments(ctx, filter)
+	skip := (pageNum - 1) * pageSize
+	count := options.Count()
+	count.SetSkip(skip)
+	count.SetLimit(pageSize)
+
+	return p.collection.CountDocuments(ctx, filter, count)
 }

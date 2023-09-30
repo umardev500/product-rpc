@@ -25,20 +25,20 @@ func (p *productDelivery) FindProduct(
 	req *proto.FindProductRequest,
 ) (*proto.FindProductResponse, error) {
 	// Get products
-	products, err := p.usecase.FindProduct(ctx)
+	products, err := p.usecase.FindProduct(ctx, req.Page, req.PerPage)
 	if err != nil {
 		return nil, err
 	}
 	// Get total items
-	total, err := p.usecase.CountProducts(ctx)
+	total, err := p.usecase.CountProducts(ctx, req.Page, req.PerPage)
 	if err != nil {
 		return nil, err
 	}
 
 	result := &proto.FindProductResponse{
 		Data:       products,
-		Page:       1,
-		PerPage:    5,
+		Page:       req.Page,
+		PerPage:    req.PerPage,
 		TotalPages: total,
 	}
 

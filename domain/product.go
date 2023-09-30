@@ -14,8 +14,16 @@ type ProductUsecase interface {
 	CreateProduct(ctx context.Context, req *proto.CreateProductRequest) error
 	UpdateProduct(ctx context.Context, req *proto.UpdateProductRequest) error
 	DeleteProduct(ctx context.Context, req *proto.DeleteProductRequest) error
-	FindProduct(ctx context.Context) ([]*proto.Product, error)
-	CountProducts(ctx context.Context) (int64, error)
+	FindProduct(
+		ctx context.Context,
+		pageNum,
+		pageSize int64,
+	) ([]*proto.Product, error)
+	CountProducts(
+		ctx context.Context,
+		pageNum,
+		pageSize int64,
+	) (int64, error)
 }
 
 // ProductRepository a contract for product repo
@@ -28,5 +36,9 @@ type ProductRepository interface {
 		pageNum,
 		pageSize int64,
 	) (*mongo.Cursor, error)
-	Count(ctx context.Context) (int64, error)
+	Count(
+		ctx context.Context,
+		pageNum,
+		pageSize int64,
+	) (int64, error)
 }

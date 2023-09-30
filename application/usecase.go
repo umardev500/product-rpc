@@ -55,8 +55,12 @@ func (p *productUsecase) DeleteProduct(
 	return p.repo.Delete(ctx, id)
 }
 
-func (p *productUsecase) FindProduct(ctx context.Context) (products []*proto.Product, err error) {
-	cur, err := p.repo.Find(ctx, 1, 5)
+func (p *productUsecase) FindProduct(
+	ctx context.Context,
+	pageNum,
+	pageSize int64,
+) (products []*proto.Product, err error) {
+	cur, err := p.repo.Find(ctx, pageNum, pageSize)
 	if err != nil {
 		return
 	}
@@ -83,6 +87,10 @@ func (p *productUsecase) FindProduct(ctx context.Context) (products []*proto.Pro
 	return
 }
 
-func (p *productUsecase) CountProducts(ctx context.Context) (int64, error) {
-	return p.repo.Count(ctx)
+func (p *productUsecase) CountProducts(
+	ctx context.Context,
+	pageNum,
+	pageSize int64,
+) (int64, error) {
+	return p.repo.Count(ctx, pageNum, pageSize)
 }
