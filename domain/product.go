@@ -22,5 +22,9 @@ type ProductRepository interface {
 	Create(ctx context.Context, product bson.D) error
 	Update(ctx context.Context, product bson.D, id primitive.ObjectID) error
 	Delete(ctx context.Context, id primitive.ObjectID) error
-	Find(ctx context.Context) (*mongo.Cursor, error)
+	Find(
+		ctx context.Context,
+		pageNum,
+		pageSize int64,
+	) (*mongo.Cursor, error)
 }

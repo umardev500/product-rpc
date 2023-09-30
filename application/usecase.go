@@ -56,7 +56,7 @@ func (p *productUsecase) DeleteProduct(
 }
 
 func (p *productUsecase) FindProduct(ctx context.Context) (products []*proto.Product, err error) {
-	cur, err := p.repo.Find(ctx)
+	cur, err := p.repo.Find(ctx, 1, 5)
 	if err != nil {
 		return
 	}

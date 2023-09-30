@@ -7,6 +7,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type productRepository struct {
@@ -40,7 +41,23 @@ func (p *productRepository) Delete(ctx context.Context, id primitive.ObjectID) e
 	return err
 }
 
-func (p *productRepository) Find(ctx context.Context) (*mongo.Cursor, error) {
+// Find retrieves documents from the MongoDB collection.
+func (p *productRepository) Find(
+	ctx context.Context,
+	pageNum,
+	pageSize int64,
+) (*mongo.Cursor, error) {
 	filter := bson.M{}
-	return p.collection.Find(ctx, filter)
+	skip := (pageNum - 1) * pageSize
+	findOpt := options.Find()
+	findOpt.SetSkip(skip)
+	findOpt.SetLimit(pageSize)
+
+	return p.collection.Find(ctx, filter, findOpt)
+}
+
+// Count returns the total count of documents in the product collection.
+func (p *productRepository) Count(ctx context.Context) (int64, error) {
+	filter := bson.M{}
+	return p.collection.CountDocuments(ctx, filter)
 }
